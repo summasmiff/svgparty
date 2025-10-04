@@ -1,0 +1,5 @@
+{:paths ["src"]
+ :deps
+ {thi.ng/geom {:mvn/version "1.0.1"
+                     :exclusions [org.jogamp.gluegen/gluegen-rt
+                                  org.jogamp.jogl/jogl-all]}}}

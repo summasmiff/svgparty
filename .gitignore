@@ -1,0 +1,7 @@
+*.svg
+.calva/output-window/output.calva-repl
+.nrepl-port
+.clj-kondo/.cache/*
+.cpcache/*
+.lsp/.cache/*
+todo.md
