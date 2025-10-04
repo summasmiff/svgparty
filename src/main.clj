@@ -1,8 +1,9 @@
 (ns main
   (:require
+   [thi.ng.math.core :as m]
    [thi.ng.geom.circle :as c]
-   [thi.ng.geom.svg.core :as svg]
-   [thi.ng.geom.svg.adapter :as adapt]))
+   [thi.ng.geom.svg.adapter :as adapt]
+   [thi.ng.geom.svg.core :as svg]))
 
 ;; Function to create concentric shapes
 (defn concentric-shapes
@@ -75,6 +76,21 @@
       [:C c4-1 c4-2 top-right]
       [:Z]])))
 
+(defn star-shape [center width _height]
+  (let [[cx cy] center
+        outer-radius (/ width 2)
+        inner-radius (/ outer-radius 2)
+        points (for [i (range 10)]
+                 (let [angle (* m/PI 2 (/ i 10))
+                       r (if (even? i) outer-radius inner-radius)
+                       x (+ cx (* r (Math/cos angle)))
+                       y (+ cy (* r (Math/sin angle)))]
+                   [x y]))]
+    (svg/polygon points)))
+
+(def concentric-stars
+  (concentric-shapes [150 150] 100 100 25 15 star-shape))
+
 (def concentric-circles
   (concentric-shapes [150 150] 20 20 10 25 circle-shape))
 
@@ -98,3 +114,8 @@
      (adapt/all-as-svg)
      (svg/serialize)
      (spit "c-s-shapes.svg"))
+
+(->> concentric-stars
+     (adapt/all-as-svg)
+     (svg/serialize)
+     (spit "c-s-stars.svg"))
