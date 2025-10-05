@@ -21,8 +21,7 @@
         num-columns (quot (- right-x left-x) resolution-abs)
         num-rows (quot (- bottom-y top-y) resolution-abs)
 
-        ; Parameters for noise and gradient
-        noise-scale 0.05
+        noise-scale 0.03 ; 0.01 (large grain) - 0.1 (small) PLAY WITH
         noise-grid (ng/create-noise-grid width height resolution-abs noise-scale)
 
         ; Find min and max values in the gradient grid for normalization

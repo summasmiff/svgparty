@@ -10,8 +10,7 @@
    - noise-scale: Scale factor for noise generation
    
    Returns:
-   - A 2D vector of values between 0.0 and 1.0
-   - The coordinates of the two maximum points as [[row1 col1] [row2 col2]]"
+   - A 2D vector of values between 0.0 and 1.0"
   ([width height resolution]
    (create-noise-grid width height resolution 0.05))
   ([width height resolution noise-scale]
@@ -64,12 +63,12 @@
                        y1 (lerp v x1 x2)]
                    (/ (+ y1 1.0) 2.0))) ; Normalize to [0, 1]
 
-         gradient-grid (for [row (range num-rows)]
+         grid (for [row (range num-rows)]
                          (for [col (range num-columns)]
                            (let [noise-val (noise col row noise-scale)]
                              (min 1 noise-val))))]
                              
-                             gradient-grid)))
+                             grid)))
 
 (defn get-value [grid row col]
   (if (and (>= row 0) (< row (count grid))
