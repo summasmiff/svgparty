@@ -9,7 +9,7 @@
    (visualize-noise-grid width height resolution 0.05 0.3 0.7))
   ([width height resolution noise-scale gradient-power noise-weight]
    ; Generate the grid using the noise-gradient-grid namespace
-   (let [[grid] (ng/create-noise-grid width height resolution 
+   (let [[grid _max-points] (ng/create-noise-grid width height resolution 
                                                 noise-scale gradient-power noise-weight)
          
          ; Prepare grid data for visualization
