@@ -38,4 +38,4 @@
        (spit filename)))
 
 ; Example usage:
-(save-visualization "noise-grid.svg" 1000 1000 10 0.05)
+(save-visualization "noise-grid.svg" 1000 1000 10 0.03)

@@ -8,7 +8,7 @@
   []
   (let [width 1000
         height 1000
-        resolution-abs (+ (rand-int 15) 5) ; Grid resolution (should be 0.5% - 2% of grid size) (PLAY WITH)
+        resolution-abs (+ (rand-int 10) 5) ; Grid resolution (should be 0.5% - 2% of grid size) (PLAY WITH)
         margin 0
 
         ; Calculate grid bounds
@@ -21,7 +21,7 @@
         num-columns (quot (- right-x left-x) resolution-abs)
         num-rows (quot (- bottom-y top-y) resolution-abs)
 
-        noise-scale 0.03 ; 0.01 (large grain) - 0.1 (small) PLAY WITH
+        noise-scale 0.04 ; 0.01 (large grain) - 0.1 (small) PLAY WITH
         noise-grid (ng/create-noise-grid width height resolution-abs noise-scale)
 
         ; Find min and max values in the gradient grid for normalization
@@ -60,13 +60,12 @@
                                (recur new-x new-y (dec steps) (conj points [new-x new-y]))))))
 
         ; Generate starting points with more randomness
-        starting-points (let [spacing 30  ; Base spacing (PLAY WITH)
+        starting-points (let [spacing 25  ; Base spacing (PLAY WITH)
                               cols (quot width spacing)
                               rows (quot height spacing)]
                           (for [row (range rows)
                                 col (range cols)
-                                :let [; Add significant randomness to position
-                                      x (+ (* col spacing)
+                                :let [x (+ (* col spacing)
                                            (rand-int spacing)  ; Random offset within cell
                                            (- (rand-int 40) 20))  ; Additional random offset
                                       y (+ (* row spacing)
