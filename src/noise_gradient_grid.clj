@@ -62,9 +62,8 @@
                        x1 (lerp u g00 g10)
                        x2 (lerp u g01 g11)
                        y1 (lerp v x1 x2)]
-                   (/ y1 2.0)))  ; Normalize to [-1, 1]
+                   (/ (+ y1 1.0) 2.0))) ; Normalize to [0, 1]
 
-         ; Pick two distinct random points to be the maximum
          gradient-grid (for [row (range num-rows)]
                          (for [col (range num-columns)]
                            (let [noise-val (noise col row noise-scale)]
