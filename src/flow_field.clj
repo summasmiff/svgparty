@@ -2,7 +2,7 @@
   (:require
    [thi.ng.geom.svg.adapter :as adapt]
    [thi.ng.geom.svg.core :as svg]
-   [noise-gradient-grid :as ng]))
+   [noise-grid :as ng]))
 
 (defn flow-field
   []

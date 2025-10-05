@@ -1,7 +1,7 @@
 (ns noise-visualization
   (:require
    [hiccup.core :as hiccup]
-   [noise-gradient-grid :as ng]))
+   [noise-grid :as ng]))
 
 (defn visualize-noise-grid
   "Visualizes the noise and gradient grid as an SVG with grayscale squares."

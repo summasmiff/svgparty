@@ -1,4 +1,4 @@
-(ns noise-gradient-grid)
+(ns noise-grid)
 
 (defn create-noise-grid
   "Creates a grid of values with noise and gradient effects.
