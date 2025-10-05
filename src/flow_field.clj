@@ -1,14 +1,15 @@
 (ns flow-field
   (:require
    [thi.ng.geom.svg.adapter :as adapt]
-   [thi.ng.geom.svg.core :as svg]))
+   [thi.ng.geom.svg.core :as svg]
+   [noise-gradient-grid :as ng]))
 
 (defn flow-field
   []
   (let [width 1000
         height 1000
-        resolution-abs 14  ; Grid resolution (should be 0.5% - 2% of grid size) (PLAY WITH)
-        margin 0.9
+        resolution-abs (+ (rand-int 15) 5) ; Grid resolution (should be 0.5% - 2% of grid size) (PLAY WITH)
+        margin 0
         
         ; Calculate grid bounds
         left-x (int (* width (- margin)))
@@ -20,20 +21,27 @@
         num-columns (quot (- right-x left-x) resolution-abs)
         num-rows (quot (- bottom-y top-y) resolution-abs)
         
-        ; Create smooth variations
-        noise (fn [x y scale]
-                (let [x1 (* x scale)
-                      y1 (* y scale)]
-                  (+ (Math/sin x1)
-                     (Math/sin (* y1 1.3))
-                     (Math/sin (* (+ x1 y1) 0.7))
-                     (Math/sin (* x1 y1 0.01)))))
+        ; Parameters for noise and gradient
+        noise-scale 0.05
+        gradient-power 0.3
+        noise-weight 0.7
         
-        ; Initialize grid with angles using noise
+        ; Create gradient grid using the noise-gradient-grid namespace
+        [gradient-grid _max-points] (ng/create-noise-grid width height resolution-abs 
+                                                         noise-scale gradient-power noise-weight)
+        
+        ; Find min and max values in the gradient grid for normalization
+        min-val (apply min (mapcat identity gradient-grid))
+        max-val (apply max (mapcat identity gradient-grid))
+        
+        ; Initialize grid with angles using gradient
         grid (for [row (range num-rows)]
                (for [col (range num-columns)]
-                 (* Math/PI 2 
-                    (mod (+ 0.5 (* 0.5 (noise col row 0.05))) 1.0))))
+                 (let [gradient (ng/get-value gradient-grid row col)
+                       ; Normalize to [0, 1] range
+                       normalized (/ (- gradient min-val) (- max-val min-val))]
+                   (* Math/PI 2 
+                      (mod (+ 0.5 (* 0.5 normalized)) 1.0)))))
         
         ; Function to get angle at a specific point
         get-angle (fn [x y]
