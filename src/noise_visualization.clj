@@ -6,13 +6,10 @@
 (defn visualize-noise-grid
   "Visualizes the noise and gradient grid as an SVG with grayscale squares."
   ([width height resolution]
-   (visualize-noise-grid width height resolution 0.05 0.3 0.7))
-  ([width height resolution noise-scale gradient-power noise-weight]
-   ; Generate the grid using the noise-gradient-grid namespace
-   (let [[grid _max-points] (ng/create-noise-grid width height resolution 
-                                                noise-scale gradient-power noise-weight)
-         
-         ; Prepare grid data for visualization
+   (visualize-noise-grid width height resolution 0.05))
+  ([width height resolution noise-scale]
+   (let [grid (ng/create-noise-grid width height resolution 
+                                                noise-scale)
          viz-data (ng/visualize-grid grid)
          
          ; Create SVG rectangles for each grid cell
@@ -34,13 +31,11 @@
 
 (defn save-visualization
   "Generates and saves the noise grid visualization to an SVG file."
-  ([filename width height resolution]
-   (save-visualization filename width height resolution 0.05 0.3 0.7))
-  ([filename width height resolution noise-scale gradient-power noise-weight]
-   (->> (visualize-noise-grid width height resolution 
-                             noise-scale gradient-power noise-weight)
-        (hiccup/html {:mode :xml})
-        (spit filename))))
+  
+  [filename width height resolution noise-scale]
+  (->> (visualize-noise-grid width height resolution noise-scale)
+       (hiccup/html {:mode :xml})
+       (spit filename)))
 
 ; Example usage:
-(save-visualization "noise-grid.svg" 1000 1000 10)
+(save-visualization "noise-grid.svg" 1000 1000 10 0.05)
